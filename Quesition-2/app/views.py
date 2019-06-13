@@ -16,13 +16,10 @@ def querySubscrberInfo():
     MSISDN  = request.get_json()["MSISDN"]
     sim  = SimCard.query.filter(SimCard.MSISDN == MSISDN).first()
     if sim is None:
-        results  = {
-            message: "No records found",
-            content: {
-                "No Records"
-            },
-            "status_code": 1}
-        return jsonify(results), 404
+        return jsonify( {"message": "No records found",
+            "content": {
+                          },
+            "status_code": 1})
 
     results  = {
         "message": "Success",
@@ -59,7 +56,7 @@ def provideSim():
     IMSI  = generators.get_IMSI()
     PUC  = generators.get_puc()
     PIN1 = generators.get_pin()
-    Ki   = generators.get_pin()
+    Ki   = generators.get_Ki()
 
     try: 
         sim   = SimCard(MSISDN = MSISDN, ICCID = ICCID, IMSI = IMSI, PUC = PUC,PIN1 = PIN1, Ki = Ki)
@@ -85,15 +82,17 @@ def provideSim():
         return jsonify({"message": "server Error", "status_code": 500, "content": "Error happened"})
 
 
-@app.route('/api/v1/activation-of-simcard/<MSISDN>/<ICCID>/<IMSI>/', methods  = ['PUT'])
-def activateSim(MSISDN, ICCID, IMSI):
-    if MSISDN is None or ICCID is None or IMSI is None:
+@app.route('/api/v1/activation-of-simcard', methods  = ['PUT'])
+def activateSim():
+    data = request.get_json()
+
+    if data['MSISDN'] is None or data['ICCID'] is None or data['IMSI'] is None:
         return jsonify(
                     {"message": "Error coccurred", 
                     "content": {"ICCID or MSISD or IMSI cannot be empty"}, 
                     "status_code": 1}), 404
 
-    sim  = SimCard.query.filter(SimCard.ICCID == ICCID, SimCard.IMSI == IMSI, SimCard.MSISDN == MSISDN).first()
+    sim  = SimCard.query.filter(SimCard.ICCID == data['ICCID'], SimCard.IMSI == data['IMSI'], SimCard.MSISDN == data['MSISDN']).first()
     if sim is None:
         return jsonify(
                         {"message": "No record found", 
