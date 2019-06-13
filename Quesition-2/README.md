@@ -27,6 +27,22 @@ source venv/bin/activate
 #Or
 (venv)$: flask run
 ```
+## Configurations
+```
+# configurations 
+class Config(object):
+    SQLALCHEMY_DATABASE_URI = "mysql://username:password@localhost/mpesa"
+    SQLALCHEMY_TRACK_MODIFICATIONS = False 
+    DEBUG = True
+
+class Developement(Config):
+    pass 
+
+
+class Deployment(Config):
+    pass
+    
+```
 
 ## Built With
 

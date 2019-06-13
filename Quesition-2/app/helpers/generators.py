@@ -59,7 +59,7 @@ def get_IMSI():
 
 def get_Ki():
     data  = binascii.b2a_hex(os.urandom(20))
-    return str(data)
+    return str(data.decode("utf-8"))
 
 def get_MSISDN():
     number  = []
