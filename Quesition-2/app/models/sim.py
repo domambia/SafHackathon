@@ -1,4 +1,5 @@
 from  app import db 
+import datetime 
 
 class SimCard(db.Model):
     id         = db.Column(db.Integer, primary_key  = True,  unique = True, index  = True)
@@ -9,6 +10,7 @@ class SimCard(db.Model):
     PUC        = db.Column(db.String(15), unique  = True)   
     status     = db.Column(db.Integer, default  = 0)
     MSISDN     = db.Column(db.String(12), unique = True)
-    
+    joined     = db.Column(db.DateTime, default = datetime.datetime.now)
+
     def __str__(self):
         return self.MSISDN     
